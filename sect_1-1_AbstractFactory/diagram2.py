@@ -98,6 +98,7 @@ class DiagramFactory:
             self.rows = DiagramFactory._create_rectangle(
                 width, height,
                 DiagramFactory.BLANK if fill == "white" else "%")
+            self.__dummy = stroke
 
     class Text:
 
@@ -105,6 +106,7 @@ class DiagramFactory:
             self.x = x
             self.y = y
             self.rows = [list(text)]
+            self.__dummy = fontsize
 
     @staticmethod
     def _create_rectangle(width, height, fill):
