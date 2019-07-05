@@ -106,6 +106,7 @@ class DiagramFactory:
             self.y = y
             self.rows = [list(text)]
 
+    @staticmethod
     def _create_rectangle(width, height, fill):
         rows = [[fill for _ in range(width)] for _ in range(height)]
         for x in range(1, width - 1):
