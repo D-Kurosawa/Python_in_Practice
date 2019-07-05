@@ -108,7 +108,8 @@ class DiagramFactory:
 
     @staticmethod
     def _create_rectangle(width, height, fill):
-        rows = [[fill for _ in range(width)] for _ in range(height)]
+        rows = [[fill for _ in range(width)]
+                for _ in range(height)]  # type: list
         for x in range(1, width - 1):
             rows[0][x] = DiagramFactory.HORIZONTAL
             rows[height - 1][x] = DiagramFactory.HORIZONTAL
