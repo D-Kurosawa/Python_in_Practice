@@ -24,16 +24,16 @@ def main():
         create_diagram(DiagramFactory).save(sys.stdout)
         create_diagram(SvgDiagramFactory).save(sys.stdout)
         return
-    textFilename = os.path.join(tempfile.gettempdir(), "diagram.txt")
-    svgFilename = os.path.join(tempfile.gettempdir(), "diagram.svg")
+    text_filename = os.path.join(tempfile.gettempdir(), "diagram.txt")
+    svg_filename = os.path.join(tempfile.gettempdir(), "diagram.svg")
 
-    txtDiagram = create_diagram(DiagramFactory)
-    txtDiagram.save(textFilename)
-    print("wrote", textFilename)
+    txt_diagram = create_diagram(DiagramFactory)
+    txt_diagram.save(text_filename)
+    print("wrote", text_filename)
 
-    svgDiagram = create_diagram(SvgDiagramFactory)
-    svgDiagram.save(svgFilename)
-    print("wrote", svgFilename)
+    svg_diagram = create_diagram(SvgDiagramFactory)
+    svg_diagram.save(svg_filename)
+    print("wrote", svg_filename)
 
 
 def create_diagram(factory):
@@ -48,17 +48,17 @@ def create_diagram(factory):
 class DiagramFactory:
 
     @classmethod
-    def make_diagram(Class, width, height):
-        return Class.Diagram(width, height)
+    def make_diagram(cls, width, height):
+        return cls.Diagram(width, height)
 
     @classmethod
-    def make_rectangle(Class, x, y, width, height, fill="white",
+    def make_rectangle(cls, x, y, width, height, fill="white",
                        stroke="black"):
-        return Class.Rectangle(x, y, width, height, fill, stroke)
+        return cls.Rectangle(x, y, width, height, fill, stroke)
 
     @classmethod
-    def make_text(Class, x, y, text, fontsize=12):
-        return Class.Text(x, y, text, fontsize)
+    def make_text(cls, x, y, text, fontsize=12):
+        return cls.Text(x, y, text, fontsize)
 
     BLANK = " "
     CORNER = "+"
@@ -70,25 +70,24 @@ class DiagramFactory:
         def __init__(self, width, height):
             self.width = width
             self.height = height
-            self.diagram = DiagramFactory._create_rectangle(self.width,
-                                                            self.height,
-                                                            DiagramFactory.BLANK)
+            self.diagram = DiagramFactory._create_rectangle(
+                self.width, self.height, DiagramFactory.BLANK)
 
         def add(self, component):
             for y, row in enumerate(component.rows):
                 for x, char in enumerate(row):
                     self.diagram[y + component.y][x + component.x] = char
 
-        def save(self, filenameOrFile):
-            file = (None if isinstance(filenameOrFile, str) else
-                    filenameOrFile)
+        def save(self, filename_or_file):
+            file = (None if isinstance(filename_or_file, str) else
+                    filename_or_file)
             try:
                 if file is None:
-                    file = open(filenameOrFile, "w", encoding="utf-8")
+                    file = open(filename_or_file, "w", encoding="utf-8")
                 for row in self.diagram:
                     print("".join(row), file=file)
             finally:
-                if isinstance(filenameOrFile, str) and file is not None:
+                if isinstance(filename_or_file, str) and file is not None:
                     file.close()
 
     class Rectangle:
@@ -96,8 +95,9 @@ class DiagramFactory:
         def __init__(self, x, y, width, height, fill, stroke):
             self.x = x
             self.y = y
-            self.rows = DiagramFactory._create_rectangle(width, height,
-                                                         DiagramFactory.BLANK if fill == "white" else "%")
+            self.rows = DiagramFactory._create_rectangle(
+                width, height,
+                DiagramFactory.BLANK if fill == "white" else "%")
 
     class Text:
 
@@ -153,16 +153,16 @@ font-family="sans-serif" font-size="{fontsize}">{text}</text>"""
         def add(self, component):
             self.diagram.append(component.svg)
 
-        def save(self, filenameOrFile):
-            file = (None if isinstance(filenameOrFile, str) else
-                    filenameOrFile)
+        def save(self, filename_or_file):
+            file = (None if isinstance(filename_or_file, str) else
+                    filename_or_file)
             try:
                 if file is None:
-                    file = open(filenameOrFile, "w", encoding="utf-8")
+                    file = open(filename_or_file, "w", encoding="utf-8")
                 file.write("\n".join(self.diagram))
                 file.write("\n" + SvgDiagramFactory.SVG_END)
             finally:
-                if isinstance(filenameOrFile, str) and file is not None:
+                if isinstance(filename_or_file, str) and file is not None:
                     file.close()
 
     class Rectangle:
