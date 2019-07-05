@@ -24,16 +24,16 @@ def main():
         create_diagram(DiagramFactory()).save(sys.stdout)
         create_diagram(SvgDiagramFactory()).save(sys.stdout)
         return
-    textFilename = os.path.join(tempfile.gettempdir(), "diagram.txt")
-    svgFilename = os.path.join(tempfile.gettempdir(), "diagram.svg")
+    text_filename = os.path.join(tempfile.gettempdir(), "diagram.txt")
+    svg_filename = os.path.join(tempfile.gettempdir(), "diagram.svg")
 
-    txtDiagram = create_diagram(DiagramFactory())
-    txtDiagram.save(textFilename)
-    print("wrote", textFilename)
+    txt_diagram = create_diagram(DiagramFactory())
+    txt_diagram.save(text_filename)
+    print("wrote", text_filename)
 
-    svgDiagram = create_diagram(SvgDiagramFactory())
-    svgDiagram.save(svgFilename)
-    print("wrote", svgFilename)
+    svg_diagram = create_diagram(SvgDiagramFactory())
+    svg_diagram.save(svg_filename)
+    print("wrote", svg_filename)
 
 
 def create_diagram(factory):
@@ -89,15 +89,15 @@ class Diagram:
             for x, char in enumerate(row):
                 self.diagram[y + component.y][x + component.x] = char
 
-    def save(self, filenameOrFile):
-        file = None if isinstance(filenameOrFile, str) else filenameOrFile
+    def save(self, filename_or_file):
+        file = None if isinstance(filename_or_file, str) else filename_or_file
         try:
             if file is None:
-                file = open(filenameOrFile, "w", encoding="utf-8")
+                file = open(filename_or_file, "w", encoding="utf-8")
             for row in self.diagram:
                 print("".join(row), file=file)
         finally:
-            if isinstance(filenameOrFile, str) and file is not None:
+            if isinstance(filename_or_file, str) and file is not None:
                 file.close()
 
 
@@ -162,15 +162,15 @@ class SvgDiagram:
     def add(self, component):
         self.diagram.append(component.svg)
 
-    def save(self, filenameOrFile):
-        file = None if isinstance(filenameOrFile, str) else filenameOrFile
+    def save(self, filename_or_file):
+        file = None if isinstance(filename_or_file, str) else filename_or_file
         try:
             if file is None:
-                file = open(filenameOrFile, "w", encoding="utf-8")
+                file = open(filename_or_file, "w", encoding="utf-8")
             file.write("\n".join(self.diagram))
             file.write("\n" + SVG_END)
         finally:
-            if isinstance(filenameOrFile, str) and file is not None:
+            if isinstance(filename_or_file, str) and file is not None:
                 file.close()
 
 
