@@ -122,6 +122,7 @@ class Rectangle:
         self.y = y
         self.rows = _create_rectangle(width, height,
                                       BLANK if fill == "white" else "%")
+        self.__dummy = stroke
 
 
 class Text:
@@ -130,6 +131,7 @@ class Text:
         self.x = x
         self.y = y
         self.rows = [list(text)]
+        self.__dummy = fontsize
 
 
 SVG_START = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
