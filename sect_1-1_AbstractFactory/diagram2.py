@@ -20,26 +20,26 @@ import tempfile
 
 
 def main():
-    if len(sys.argv) > 1 and sys.argv[1] == "-P":  # For regression testing
+    if len(sys.argv) > 1 and sys.argv[1] == '-P':  # For regression testing
         create_diagram(DiagramFactory).save(sys.stdout)
         create_diagram(SvgDiagramFactory).save(sys.stdout)
         return
-    text_filename = os.path.join(tempfile.gettempdir(), "diagram.txt")
-    svg_filename = os.path.join(tempfile.gettempdir(), "diagram.svg")
+    text_filename = os.path.join(tempfile.gettempdir(), 'diagram.txt')
+    svg_filename = os.path.join(tempfile.gettempdir(), 'diagram.svg')
 
     txt_diagram = create_diagram(DiagramFactory)
     txt_diagram.save(text_filename)
-    print("wrote", text_filename)
+    print('wrote', text_filename)
 
     svg_diagram = create_diagram(SvgDiagramFactory)
     svg_diagram.save(svg_filename)
-    print("wrote", svg_filename)
+    print('wrote', svg_filename)
 
 
 def create_diagram(factory):
     diagram = factory.make_diagram(30, 7)
-    rectangle = factory.make_rectangle(4, 1, 22, 5, "yellow")
-    text = factory.make_text(7, 3, "Abstract Factory")
+    rectangle = factory.make_rectangle(4, 1, 22, 5, 'yellow')
+    text = factory.make_text(7, 3, 'Abstract Factory')
     diagram.add(rectangle)
     diagram.add(text)
     return diagram
@@ -52,18 +52,18 @@ class DiagramFactory:
         return cls.Diagram(width, height)
 
     @classmethod
-    def make_rectangle(cls, x, y, width, height, fill="white",
-                       stroke="black"):
+    def make_rectangle(cls, x, y, width, height, fill='white',
+                       stroke='black'):
         return cls.Rectangle(x, y, width, height, fill, stroke)
 
     @classmethod
     def make_text(cls, x, y, text, fontsize=12):
         return cls.Text(x, y, text, fontsize)
 
-    BLANK = " "
-    CORNER = "+"
-    HORIZONTAL = "-"
-    VERTICAL = "|"
+    BLANK = ' '
+    CORNER = '+'
+    HORIZONTAL = '-'
+    VERTICAL = '|'
 
     class Diagram:
 
@@ -83,9 +83,9 @@ class DiagramFactory:
                     filename_or_file)
             try:
                 if file is None:
-                    file = open(filename_or_file, "w", encoding="utf-8")
+                    file = open(filename_or_file, 'w', encoding='utf-8')
                 for row in self.diagram:
-                    print("".join(row), file=file)
+                    print(''.join(row), file=file)
             finally:
                 if isinstance(filename_or_file, str) and file is not None:
                     file.close()
@@ -97,7 +97,7 @@ class DiagramFactory:
             self.y = y
             self.rows = DiagramFactory._create_rectangle(
                 width, height,
-                DiagramFactory.BLANK if fill == "white" else "%")
+                DiagramFactory.BLANK if fill == 'white' else '%')
             self.__dummy = stroke
 
     class Text:
@@ -127,20 +127,20 @@ class DiagramFactory:
 class SvgDiagramFactory(DiagramFactory):
     # The make_* class methods are inherited
 
-    SVG_START = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
-    "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
-    width="{pxwidth}px" height="{pxheight}px">"""
+    SVG_START = '''<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 20010904//EN'
+    'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg xmlns='http://www.w3.org/2000/svg'
+    xmlns:xlink='http://www.w3.org/1999/xlink' xml:space='preserve'
+    width='{pxwidth}px' height='{pxheight}px'>'''
 
-    SVG_END = "</svg>\n"
+    SVG_END = '</svg>\n'
 
-    SVG_RECTANGLE = """<rect x="{x}" y="{y}" width="{width}" \
-height="{height}" fill="{fill}" stroke="{stroke}"/>"""
+    SVG_RECTANGLE = '''<rect x='{x}' y='{y}' width='{width}' \
+height='{height}' fill='{fill}' stroke='{stroke}'/>'''
 
-    SVG_TEXT = """<text x="{x}" y="{y}" text-anchor="left" \
-font-family="sans-serif" font-size="{fontsize}">{text}</text>"""
+    SVG_TEXT = '''<text x='{x}' y='{y}' text-anchor='left' \
+font-family='sans-serif' font-size='{fontsize}'>{text}</text>'''
 
     SVG_SCALE = 20
 
@@ -151,7 +151,7 @@ font-family="sans-serif" font-size="{fontsize}">{text}</text>"""
             pxheight = height * SvgDiagramFactory.SVG_SCALE
             self.diagram = [SvgDiagramFactory.SVG_START.format(**locals())]
             outline = SvgDiagramFactory.Rectangle(0, 0, width, height,
-                                                  "lightgreen", "black")
+                                                  'lightgreen', 'black')
             self.diagram.append(outline.svg)
 
         def add(self, component):
@@ -162,9 +162,9 @@ font-family="sans-serif" font-size="{fontsize}">{text}</text>"""
                     filename_or_file)
             try:
                 if file is None:
-                    file = open(filename_or_file, "w", encoding="utf-8")
-                file.write("\n".join(self.diagram))
-                file.write("\n" + SvgDiagramFactory.SVG_END)
+                    file = open(filename_or_file, 'w', encoding='utf-8')
+                file.write('\n'.join(self.diagram))
+                file.write('\n' + SvgDiagramFactory.SVG_END)
             finally:
                 if isinstance(filename_or_file, str) and file is not None:
                     file.close()
@@ -187,5 +187,5 @@ font-family="sans-serif" font-size="{fontsize}">{text}</text>"""
             self.svg = SvgDiagramFactory.SVG_TEXT.format(**locals())
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
