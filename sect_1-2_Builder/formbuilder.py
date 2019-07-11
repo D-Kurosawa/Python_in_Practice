@@ -183,7 +183,8 @@ pady="0.75m")""".format(name, row, column)
                                              statements="\n        ".join(
                                                  self.statements))
 
-    def _canonicalize(self, text, start_lower=True):
+    @staticmethod
+    def _canonicalize(text, start_lower=True):
         text = re.sub(r"\W+", "", text)
         if text[0].isdigit():
             return "_" + text
