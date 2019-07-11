@@ -59,6 +59,10 @@ def create_login_form(builder):
 class AbstractFormBuilder(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
+    def __init__(self):
+        self.title = None
+
+    @abc.abstractmethod
     def add_title(self, title):
         self.title = title
 
@@ -82,6 +86,7 @@ class AbstractFormBuilder(metaclass=abc.ABCMeta):
 class HtmlFormBuilder(AbstractFormBuilder):
 
     def __init__(self):
+        super().__init__()
         self.title = "HtmlFormBuilder"
         self.items = {}
 
@@ -146,6 +151,7 @@ if __name__ == "__main__":
 """
 
     def __init__(self):
+        super().__init__()
         self.title = "TkFormBuilder"
         self.statements = []
 
