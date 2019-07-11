@@ -32,17 +32,17 @@ def main():
         print(create_login_form(TkFormBuilder()))
         return
 
-    htmlFilename = os.path.join(tempfile.gettempdir(), "login.html")
-    htmlForm = create_login_form(HtmlFormBuilder())
-    with open(htmlFilename, "w", encoding="utf-8") as file:
-        file.write(htmlForm)
-    print("wrote", htmlFilename)
+    html_filename = os.path.join(tempfile.gettempdir(), "login.html")
+    html_form = create_login_form(HtmlFormBuilder())
+    with open(html_filename, "w", encoding="utf-8") as file:
+        file.write(html_form)
+    print("wrote", html_filename)
 
-    tkFilename = os.path.join(tempfile.gettempdir(), "login.py")
-    tkForm = create_login_form(TkFormBuilder())
-    with open(tkFilename, "w", encoding="utf-8") as file:
-        file.write(tkForm)
-    print("wrote", tkFilename)
+    tk_filename = os.path.join(tempfile.gettempdir(), "login.py")
+    tk_form = create_login_form(TkFormBuilder())
+    with open(tk_filename, "w", encoding="utf-8") as file:
+        file.write(tk_form)
+    print("wrote", tk_filename)
 
 
 def create_login_form(builder):
@@ -105,14 +105,14 @@ class HtmlFormBuilder(AbstractFormBuilder):
     def form(self):
         html = ["<!doctype html>\n<html><head><title>{}</title></head>"
                 "<body>".format(self.title), '<form><table border="0">']
-        thisRow = None
+        this_row = None
         for key, value in sorted(self.items.items()):
             row, column = key
-            if thisRow is None:
+            if this_row is None:
                 html.append("  <tr>")
-            elif thisRow != row:
+            elif this_row != row:
                 html.append("  </tr>\n  <tr>")
-            thisRow = row
+            this_row = row
             html.append("    " + value)
         html.append("  </tr>\n</table></form></body></html>")
         return "\n".join(html)
@@ -183,11 +183,11 @@ pady="0.75m")""".format(name, row, column)
                                              statements="\n        ".join(
                                                  self.statements))
 
-    def _canonicalize(self, text, startLower=True):
+    def _canonicalize(self, text, start_lower=True):
         text = re.sub(r"\W+", "", text)
         if text[0].isdigit():
             return "_" + text
-        return text if not startLower else text[0].lower() + text[1:]
+        return text if not start_lower else text[0].lower() + text[1:]
 
 
 if __name__ == "__main__":
